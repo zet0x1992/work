@@ -1,0 +1,78 @@
+<!-- 
+ 	Что бы добавить несколько форм на страницу, нужно в див, в который с помощью этого скрипта вставляется iframe, заменить Id на Class и немного изменить сам скрипт
+-->
+
+
+<div align="center">
+	<div class="order_form_owner"></div>
+	</div>
+
+
+<div align="center">
+	<div class="order_form_owner"></div>
+	</div>
+
+<div align="center">
+	<div class="order_form_owner"></div>
+	</div>	
+
+
+
+
+<script language="JavaScript">
+
+/*/
+
+	Стиль формы можно менять толко так, как это дает разработчик формы, так как изменить стиль у окна iframa через js нельзя
+	Пробывал запарсить на своем серваке, формы скачиваются, но js скрипты перестабют работать, и формы не отправляются на сервер jusclick
+	Может быть в настройках, через личный кабинет можно как то изменить, но у меня к нему нет доступа
+
+
+	менять можно background, font-size, width, и стиль button
+
+	что бы поле скидки не было видно, нужно у пеоеменной required стереть свойство show_kupon
+
+/*/
+
+
+var backGround = 'b7b7b7';
+var fontSize = 14;
+var width = 420;
+
+var pref = '';
+var p = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+for (var i=0;i<5;i++)
+pref+=p.charAt(Math.floor(Math.random()*p.length));
+var url = location.href;
+if (url.indexOf('#')!=-1)
+url = location.href.substr(0, location.href.indexOf('#'));
+var src = 'http://prodavecokon.justclick.ru/order_form/?goods=product_tinvest_money_control&color='+backGround+'&width='+width+'&kupon=f19t9k&required=&font='+fontSize+'&button=%D0%97%D0%90%D0%91%D0%A0%D0%90%D0%A2%D0%AC%20%D0%9A%D0%A3%D0%A0%D0%A1!&btn_css=g-button red&btn_width=231&btn_height=56&btn_htop=0&__pref='+pref+'&__parent='+encodeURIComponent(url);
+var delay = Math.round(Math.random()*20)+30;
+if (typeof UpdateFormHeight != 'function') {
+function UpdateFormHeight(pref, frame) {
+var h=null;
+if (!h) {
+var re = new RegExp("^#"+pref+"(\\d+)");
+if (location.hash.match(re)) {
+h=RegExp.$1;
+location.hash = '';
+}
+}
+if (!h)
+for (var i=0; i<2000; i+=10)
+if (top.frames[pref+i]) {
+h=i;
+break;
+}
+if (h)
+frame.style.height=h+'px';
+setTimeout(function(){ UpdateFormHeight(pref, frame); }, delay*4);
+}
+}
+var html = '<iframe src="'+src+ '" frameborder="0" scrolling="no" style="width:420px;height:189px;overflow:hidden;padding:15px 0px;box-sizing:initial;" onload="var th=this; setTimeout(function(){ UpdateFormHeight(pref, th); }, '+delay+')"></iframe>';
+var order_form_owner = document.getElementsByClassName("order_form_owner");
+for(i=0;i<order_form_owner.length;i++)
+{
+	order_form_owner[i].innerHTML = html;
+}
+</script>
